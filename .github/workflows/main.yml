@@ -1,0 +1,16 @@
+name: Build program
+on: [push]
+jobs:       
+  Macos-build:
+    runs-on: macos-latest
+    steps:
+      - uses: actions/checkout@v2
+      - run: xcode-select --install
+      - run: bash -c "$(curl -fsSL https://raw.githubusercontent.com/roothide/theos/master/bin/install-theos)"
+      - run: make package
+      - name: (Upload) Executable
+        id: artifact_upload
+        uses: actions/upload-artifact@v3
+        with:
+          name: out-macos
+          path: packages
